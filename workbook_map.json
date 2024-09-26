@@ -1,0 +1,59 @@
+{
+  "wb_title": "kc_big.xlsx",
+  "worksheets": {
+    "ws_title": "S9-13, 29-36 | Ratio Summaries",
+    "tables": [
+        {
+        "title": "Slide 9: Regional averages",
+        "col_descriptors": "C9:H9",
+        "row_descriptors": "D10:D17",
+        "check_cell_range": "E10:H17"
+      },
+      {
+        "title": "Slide 10: Archetype averages",
+        "col_descriptors": "D21:I21",
+        "row_descriptors": "D21:D29",
+        "check_cell_range": "E22:I29"
+      },
+      {
+        "title": "Slide 11: Local Talent Ratios - AMER",
+        "col_descriptors":"C33:Q33",
+        "row_descriptors":"C33:C38",
+        "check_cell_range":"E34:Q34"
+      },
+      {
+        "title": "Slide 12: Local Talent Ratios - EMEA",
+        "col_descriptors":"",
+        "row_descriptors":"",
+        "check_cell_range":""
+      },
+      {
+        "title": "",
+        "col_descriptors":"",
+        "row_descriptors":"",
+        "check_cell_range":""
+      },
+      {
+        "title": "",
+        "col_descriptors":"",
+        "row_descriptors":"",
+        "check_cell_range":""
+      },
+      {
+        "title": "",
+        "col_descriptors":"",
+        "row_descriptors":"",
+        "check_cell_range":""
+      },
+      {
+        "title": "",
+        "col_descriptors":"",
+        "row_descriptors":"",
+        "check_cell_range":""
+      },
+      {
+        "title": "",
+        "col_descriptors":"",
+        "row_descriptors":"",
+        "check_cell_range":""
+      },

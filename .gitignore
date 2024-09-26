@@ -5,3 +5,7 @@ pyvenv.cfg
 keys.env
 
 *.xlsx
+
+*.json
+
+*.xlsm

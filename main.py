@@ -11,11 +11,6 @@ load_dotenv('keys.env')
 openai_api_key = os.getenv('OPENAI_API_KEY')
 client = OpenAI(api_key=openai_api_key)
 
-formula_wb = load_workbook('math.xlsx')
-value_wb = load_workbook('math.xlsx', data_only=True)
-
-formula_ws = formula_wb['Sheet1'] 
-value_ws = value_wb['Sheet1']
 
 def parse_cell_reference(cell_ref):
     # Use regex to split the cell reference into letters and numbers
@@ -178,7 +173,17 @@ def check_range(start_cell, end_cell, formula_ws):
     print("Range check completed")
 
 
-def semantic_map_table(worksheet, col_descriptors, row_descriptors, check_cell_range, title_cell):
+def semantic_map_table(config):
+    spreadsheet = config['spreadsheet']
+    worksheet = config['worksheet']
+    col_descriptors = config['col_descriptors']
+    row_descriptors = config['row_descriptors']
+    check_cell_range = config['check_cell_range']
+    title_cell = config['title_cell']
+    
+    value_wb = load_workbook(spreadsheet, data_only=True)
+    ws = value_wb[worksheet]
+
     col_start_col, col_start_row, col_end_col, col_end_row = range_boundaries(col_descriptors)
     row_start_col, row_start_row, row_end_col, row_end_row = range_boundaries(row_descriptors)
 
@@ -189,21 +194,47 @@ def semantic_map_table(worksheet, col_descriptors, row_descriptors, check_cell_r
 
 
     for col in range(col_start_col, col_end_col+1):
-        col_headers[col] = worksheet.cell(row=col_start_row, column=col).value or "NULL"
+        col_headers[col] = ws.cell(row=col_start_row, column=col).value or "NULL"
     
     for row in range(row_start_row, row_end_row+1):
-        row_headers[row] = worksheet.cell(row=row, column=row_start_col).value or "NULL"
+        row_headers[row] = ws.cell(row=row, column=row_start_col).value or "NULL"
 
     # Create the cell meaning dictionary using dictionary comprehension
     cell_meaning_dict = {}
     
     for row in range(cells_start_row,cells_end_row+1):
         for col in range(cells_start_col, cells_end_col+1):
-            cell_meaning_dict[(col,row)] = {"col_d":col_headers[col], "row_d":row_headers[row],"title":worksheet[title_cell].value}
+            cell_meaning_dict[(col,row)] = {"col_d":col_headers[col], "row_d":row_headers[row],"title":ws[title_cell].value}
 
     return cell_meaning_dict
 
-# Example usage
-result = semantic_map_table(worksheet = value_ws, col_descriptors="A11:F11", row_descriptors="A9:A29",check_cell_range = "B13:F29",title_cell="A10")
 
+table_1 = {
+    "spreadsheet": "kc_big.xlsx",
+    "worksheet": "YoY Summary Filter",
+    "col_descriptors": "B10:D10",
+    "row_descriptors": "B10:B56",
+    "check_cell_range": "C11:D56",
+    "title_cell": "B3"
+}
+
+workbook = {
+        
+}
+
+result = semantic_map_table(table_1)
+
+
+def semantic_map_workbook() #ok so this datastructure looks like
+"""
+workbook = {
+    "worksheet1": {
+        "table1": {table obejct},
+        "table2": {table object},
+    },
+    "worksheet2": {
+        "table1": {table object}}
+
+}
+"""
 print(result)

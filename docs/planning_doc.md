@@ -8,7 +8,7 @@ STEP 1B: During this proccess you need to create a list of all cells which need 
 
 Note: need to decide how we are going to store cells. Probably as numbers directly or even coordinate pair makes the most sense (4,3) is D3. It needs to have the sheet name in it as well [done]
 
-STEP 1c: test on kayla's shee
+STEP 1c: test on kayla's sheet [done]
 
 STEP 2o: construct dictionary objects for 2 tables in Kayla's sheet
 
