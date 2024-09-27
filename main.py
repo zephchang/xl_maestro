@@ -6,6 +6,11 @@ import re
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+import json
+
+# Load the workbook_map.json file
+with open('workbook_map.json', 'r') as f:
+    workbook_map = json.load(f)
 
 load_dotenv('keys.env')
 openai_api_key = os.getenv('OPENAI_API_KEY')
@@ -74,7 +79,7 @@ def guess_cell_formula(cell, range_start, range_end, formula_ws):
     start_col_number = l_to_n(start_col_letter)
     end_col_number = l_to_n(end_col_letter)
 
-    spreadsheet_purpose = "This spreadsheet calculates and analyzes the financial performance of a business in several scenarios, focusing on metrics like revenue, gross margin, variable profit, and fixed costs. It also computes pre-tax profit, net margins, and cash flows for three individuals, taking into account tax rates, debt payments, and profit-sharing percentages."
+    workbook_purpose = "This workbook calculates and analyzes the financial performance of a business in several scenarios, focusing on metrics like revenue, gross margin, variable profit, and fixed costs. It also computes pre-tax profit, net margins, and cash flows for three individuals, taking into account tax rates, debt payments, and profit-sharing percentages."
 
     col_headers = {} #for range end_col - start_col
     for col_number in range(start_col_number,end_col_number+1):
@@ -92,9 +97,9 @@ def guess_cell_formula(cell, range_start, range_end, formula_ws):
     prompt = f"""
     You are a keen-eyed excel expert who is skilled at catching subtle formula errors or typos.
     \n
-    You are looking at a spreadsheet which has the following purpose: {spreadsheet_purpose}
+    You are looking at a workbook which has the following purpose: {workbook_purpose}
     \n
-    The spreadsheet has the following rows and collumns:
+    The workbook has the following rows and collumns:
 
     ROWS = {row_headers}
 
@@ -173,15 +178,15 @@ def check_range(start_cell, end_cell, formula_ws):
     print("Range check completed")
 
 
-def semantic_map_table(config):
-    spreadsheet = config['spreadsheet']
+def semantic_map_table(config, modify_dict): #look I don't love that we're using mutation, but we need some way to deal with overwriting so I prefer this than some kind of dictionary combining utility function
+    workbook = config['workbook']
     worksheet = config['worksheet']
     col_descriptors = config['col_descriptors']
     row_descriptors = config['row_descriptors']
     check_cell_range = config['check_cell_range']
-    title_cell = config['title_cell']
+    table_title = config['table_title']
     
-    value_wb = load_workbook(spreadsheet, data_only=True)
+    value_wb = load_workbook(workbook, data_only=True)
     ws = value_wb[worksheet]
 
     col_start_col, col_start_row, col_end_col, col_end_row = range_boundaries(col_descriptors)
@@ -198,43 +203,37 @@ def semantic_map_table(config):
     
     for row in range(row_start_row, row_end_row+1):
         row_headers[row] = ws.cell(row=row, column=row_start_col).value or "NULL"
-
-    # Create the cell meaning dictionary using dictionary comprehension
-    cell_meaning_dict = {}
     
     for row in range(cells_start_row,cells_end_row+1):
         for col in range(cells_start_col, cells_end_col+1):
-            cell_meaning_dict[(col,row)] = {"col_d":col_headers[col], "row_d":row_headers[row],"title":ws[title_cell].value}
+            modify_dict[f"{get_column_letter(col)}{row}"] = {"col_descrip":col_headers[col], "row_descrip":row_headers[row],"title":table_title}
+        #should throw an error if col/row already exists
+    print("Table title:",table_title,"worksheet:",worksheet, "complete")
 
-    return cell_meaning_dict
+def semantic_map_workbook(workbook_map):
+    workbook_tree = {}
+    for worksheet in workbook_map["worksheets"]:
+        worksheet_tree = {}
+        for table in worksheet["tables"]:
+            table_dic = {
+                "workbook": workbook_map["wb_title"],
+                "worksheet": worksheet["ws_title"],
+                "table_title": table["title"],
+                "col_descriptors": table["col_descriptors"],
+                "row_descriptors": table["row_descriptors"],
+                "check_cell_range": table["check_cell_range"]
+            }
+            semantic_map_table(table_dic, worksheet_tree)
+        workbook_tree[worksheet["ws_title"]] = worksheet_tree
+    return workbook_tree
 
+        #ok so in theory, at this point we've gone through every worksheet and for each worksheet gone through every table and for each table constructed a dict and for each dict we added all of the cells to the semantic_map_table
+semantic_map = semantic_map_workbook(workbook_map)
 
-table_1 = {
-    "spreadsheet": "kc_big.xlsx",
-    "worksheet": "YoY Summary Filter",
-    "col_descriptors": "B10:D10",
-    "row_descriptors": "B10:B56",
-    "check_cell_range": "C11:D56",
-    "title_cell": "B3"
-}
+# Save the result to test.json
+with open('test.json', 'w') as f:
+    json.dump(semantic_map, f, indent=4)
 
-workbook = {
-        
-}
+print("Results saved to test.json")
 
-result = semantic_map_table(table_1)
-
-
-def semantic_map_workbook() #ok so this datastructure looks like
-"""
-workbook = {
-    "worksheet1": {
-        "table1": {table obejct},
-        "table2": {table object},
-    },
-    "worksheet2": {
-        "table1": {table object}}
-
-}
-"""
-print(result)
+print(semantic_map["S9-13, 29-36 | Ratio Summaries"]["G36"])

@@ -10,9 +10,11 @@ Note: need to decide how we are going to store cells. Probably as numbers direct
 
 STEP 1c: test on kayla's sheet [done]
 
-STEP 2o: construct dictionary objects for 2 tables in Kayla's sheet
+STEP 2o: construct dictionary objects for 2 tables in Kayla's sheet [done]
 
-STEP 2: Create a semantic map of all tables on a sheet (probably manually coded is realistic). Semantic maps should store meaning as (cols, rows, table title)
+STEP 2: Create a semantic map of all tables on a sheet (probably manually coded is realistic). Semantic maps should store meaning as (cols, rows, table title) [done]
+
+STEP 3: Successfuly query the DB for a cell
 
 STEP 3: For each cell, we are going to do a check. Pull the formula. We need to deal with some specific cases:
 
