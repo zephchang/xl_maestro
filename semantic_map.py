@@ -22,18 +22,20 @@ def semantic_map_table(config, modify_dict): #look I don't love that we're using
     col_headers = {} #this should be {1: "decription", 2: "description"}
     row_headers = {} #this is also {1: "decription", 2: "description"}
 
-
-    for col in range(col_start_col, col_end_col+1):
-        col_headers[col] = ws.cell(row=col_start_row, column=col).value or "NULL"
-    
-    for row in range(row_start_row, row_end_row+1):
-        row_headers[row] = ws.cell(row=row, column=row_start_col).value or "NULL"
-    
-    for row in range(cells_start_row,cells_end_row+1):
-        for col in range(cells_start_col, cells_end_col+1):
-            modify_dict[f"{get_column_letter(col)}{row}"] = {"col_descrip":col_headers[col], "row_descrip":row_headers[row],"title":table_title}
-        #should throw an error if col/row already exists
+    try:
+        for col in range(col_start_col, col_end_col+1):
+            col_headers[col] = ws.cell(row=col_start_row, column=col).value or "NULL"
         
+        for row in range(row_start_row, row_end_row+1):
+            row_headers[row] = ws.cell(row=row, column=row_start_col).value or "NULL"
+        
+        for row in range(cells_start_row,cells_end_row+1):
+            for col in range(cells_start_col, cells_end_col+1):
+                modify_dict[f"{get_column_letter(col)}{row}"] = {"col_descrip":col_headers[col], "row_descrip":row_headers[row],"title":table_title}
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        print("Here is the configuration that caused the error:", config)
+
 def semantic_map_workbook(workbook_map):
     workbook_tree = {}
     for worksheet in workbook_map["worksheets"]:

@@ -1,5 +1,5 @@
 {
-  "wb_title": "kc_big.xlsx",
+  "wb_title": "kc_big.xlsm",
   "worksheets": [
     {
       "ws_title": "S9-13, 29-36 | Ratio Summaries",
@@ -51,6 +51,47 @@
           "col_descriptors": "E86:J86",
           "row_descriptors": "D87:D95",
           "check_cell_range": "E87:J95"
+        }
+      ]
+    },
+    {
+      "ws_title": "Master Coverage Ratios",
+      "tables": [
+        {
+          "title": "HR Metrics and Coverage Ratios by Region/Size (CATEGORY-LEVEL)",
+          "col_descriptors": "G10:O10",
+          "row_descriptors": "D11:D21",
+          "check_cell_range": "G11:O21"
+        },
+        {
+          "title": "Employee counts & Coverage Ratios",
+          "col_descriptors": "Q10:AM10",
+          "row_descriptors": "D11:D21",
+          "check_cell_range": "Q11:AM21"
+        },
+        {
+          "title": "Cluster Level Cover-Ratios",
+          "col_descriptors": "C26:N26",
+          "row_descriptors": "B27:B61",
+          "check_cell_range": "C27:N61"
+        },
+        {
+          "title": "Total Employee Counts",
+          "col_descriptors": "Q26:U26",
+          "row_descriptors": "B27:B61",
+          "check_cell_range": "Q27:U61"
+        },
+        {
+          "title": "Coverage Ratios",
+          "col_descriptors": "X26:AG26",
+          "row_descriptors": "B27:B61",
+          "check_cell_range": "X27:AG61"
+        },
+        {
+          "title": "Office Categorization",
+          "col_descriptors": "AI26:AO26",
+          "row_descriptors": "B27:B61",
+          "check_cell_range": "AI27:AO61"
         }
       ]
     }

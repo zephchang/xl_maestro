@@ -14,7 +14,7 @@ import parse
 with open('workbook_map.json', 'r') as f:
     workbook_map = json.load(f)
 
-cell_lookup = semantic_map.semantic_map_workbook(workbook_map)
+cell_lookup = semantic_map.semantic_map_workbook(workbook_map) #note this implicitly has the name of the spreadsheet in the workbook_map which tells semantic map to load that workbook from root.
 
 # Load the workbook
 formulas_wb = load_workbook('kc_big.xlsm', data_only=False)
