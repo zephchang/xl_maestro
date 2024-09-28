@@ -33,8 +33,7 @@ def semantic_map_table(config, modify_dict): #look I don't love that we're using
         for col in range(cells_start_col, cells_end_col+1):
             modify_dict[f"{get_column_letter(col)}{row}"] = {"col_descrip":col_headers[col], "row_descrip":row_headers[row],"title":table_title}
         #should throw an error if col/row already exists
-    print("Table title:",table_title,"worksheet:",worksheet, "complete")
-
+        
 def semantic_map_workbook(workbook_map):
     workbook_tree = {}
     for worksheet in workbook_map["worksheets"]:

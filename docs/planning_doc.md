@@ -14,10 +14,13 @@ STEP 2o: construct dictionary objects for 2 tables in Kayla's sheet [done]
 
 STEP 2: Create a semantic map of all tables on a sheet (probably manually coded is realistic). Semantic maps should store meaning as (cols, rows, table title) [done]
 
-STEP 3: Successfuly query the DB for a cell
+STEP 3: Successfuly query the DB for a cell [done]
 
-STEP 3: For each cell, we are going to do a check. Pull the formula. We need to deal with some specific cases:
+STEP 3: For each cell, we are going to do a check. Pull the formula. We need to deal with some specific cases: [done]
 
-> 1 Generic find cell. Semantic meaning dictionary needs to have sheet name, and then cell. If the cell is just 2 letters, need to add the current sheet name in front of it
+> 1 Generic find cell. Semantic meaning dictionary needs to have sheet name, and then cell. If the cell is just 2 letters, need to add the current sheet name in front of it [done]
 
 > 2 XLOOKUP kind of thing, MATCH, INDEX< >
+> [done!!!]
+
+Next: change our missing cell check to - instead of empty string, put the value of the cell. Not as good but good enough, also sometimes is correct.

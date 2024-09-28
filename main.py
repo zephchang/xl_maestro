@@ -14,11 +14,12 @@ import parse
 with open('workbook_map.json', 'r') as f:
     workbook_map = json.load(f)
 
-load_dotenv('keys.env')
-openai_api_key = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key=openai_api_key)
-
 cell_lookup = semantic_map.semantic_map_workbook(workbook_map)
+
+# Load the workbook
+formulas_wb = load_workbook('kc_big.xlsm', data_only=False)
+values_wb = load_workbook('kc_big.xlsm', data_only=True)
+
 
 # Save the result to test.json
 with open('test.json', 'w') as f:
@@ -26,7 +27,9 @@ with open('test.json', 'w') as f:
 
 print("Results saved to test.json")
 
-print(semantic_map["S9-13, 29-36 | Ratio Summaries"]["G36"])
+print("CONTEXT FOR LLM\n", parse.formula_context(formula ="""=IFERROR(INDEX(XLOOKUP($C65,'Master Coverage Ratios'!$I$24:$AD$24,'Master Coverage Ratios'!$I$27:$AD$61),MATCH(H$59,'Master Coverage Ratios'!$B$27:$B$61,0,$C65:$C$66)),"Unavailable")""",formula_ws = "S9-13, 29-36 | Ratio Summaries",cell_lookup = cell_lookup, values_wb = values_wb))
+
+
 
 
 # def parse_cell_reference(cell_ref):
